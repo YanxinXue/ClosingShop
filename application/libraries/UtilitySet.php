@@ -6,22 +6,34 @@
 */
 
 class UtilitySet{
-	public function url_joint($params_data)
+	public function redirect_get($url, $params_data)
 	{
-		if (isset($params_data['oauthURL']))
-		{
-			$result = $params_data['oauthURL']."?";
-			foreach ($params_data as $key => $value) 
-			{
-				if (strcmp($key,'oauthURL'))
-					$result = $result.$key."=".$value."&";
-			}
-			$result = substr($result,0,strlen($result)-1);
-		}else
-		{
-			$result = null;
+		$get_url = $url.'?';
+		foreach ($params_data as $key => $value) {
+			$get_url = $get_url.$key.'='.$value.'&';
 		}
-		return $result;
+		$get_url = substr($get_url,0,-1);
+		redirect($get_url);
+	}
+	
+	public function JSON_post($url, $postfields)
+	{
+		$post_data = '';
+		foreach($postfields as $key => $value){
+			$post_data = $post_data.$key.'='.urlencode($value).'&';
+		}
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);  
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		//指定post数据
+		curl_setopt($ch, CURLOPT_POST, true);
+		//添加变量
+		curl_setopt($ch, CURLOPT_POSTFIELDS, substr($post_data,0,-1));
+		$output = curl_exec($ch);
+		curl_close($ch);
+		return $output;
 	}
 }
 
