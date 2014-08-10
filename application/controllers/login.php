@@ -2,9 +2,10 @@
 
 class Login extends CI_Controller {
 
+	//TODO 新增方法判断用户是否已经授权，没有授权跳转到授权页面		
+
 	public function auth()
-	{
-		//TODO 判断用户是否已经授权，没有授权跳转到授权页面		
+	{		
 		$this->load->library('utilitySet');		
 		$this->load->helper('url');
 		
@@ -18,8 +19,10 @@ class Login extends CI_Controller {
 	public function check_auth()
 	{
 		$this->load->library('utilitySet');	
+		$this->load->helper('date');
 		
 		$params_data = $this->input->get(null, TRUE);
+		$time_now = now();
 		if (isset($params_data['code']))
 		{
 			$config_data = $this->_get_app_config();
@@ -32,25 +35,29 @@ class Login extends CI_Controller {
 			$params_data = json_decode($result_JSON, TRUE);			
 			if (isset($params_data['access_token']))
 			{
-				//TODO
-				echo($result_JSON);
-				/*
-				处理以下的内容
+				$params_data['expires_in'] = unix_to_human($time_now + $params_data['expires_in'], TRUE, 'eu');
+				$params_data['re_expires_in'] = unix_to_human($time_now + $params_data['re_expires_in'], TRUE, 'eu');
+				$params_data['r1_expires_in'] = unix_to_human($time_now + $params_data['r1_expires_in'], TRUE, 'eu');
+				$params_data['r2_expires_in'] = unix_to_human($time_now + $params_data['r2_expires_in'], TRUE, 'eu');
+				$params_data['w1_expires_in'] = unix_to_human($time_now + $params_data['w1_expires_in'], TRUE, 'eu');
+				$params_data['w2_expires_in'] = unix_to_human($time_now + $params_data['w2_expires_in'], TRUE, 'eu');
+				$this->load->model('User_model');
+				if (count($this->User_model->select_user_by_taobao_user_id($params_data['taobao_user_id'])) == 0)
 				{
-					w2_expires_in: 1800,
-					taobao_user_id: "3638530058",
-					taobao_user_nick: "sandbox_sjxyx",
-					w1_expires_in: 12960000,
-					re_expires_in: 15552000,
-					r2_expires_in: 259200,
-					expires_in: 12960000,
-					token_type: "Bearer",
-					refresh_token: "6200402de5ZZ4cb9486b53764fd20200d35d9b87886085b3638530058",
-					access_token: "620170273egi63545c4cfe48eba48020b87ff36a9d82f3a3638530058",
-					r1_expires_in: 12960000
+					$database_result = $this->User_model->insert_user($params_data);
+				}else
+				{
+					$database_result = $this->User_model->update_user($params_data);
 				}
-				*/
-				return 0;
+				if ($database_result)
+				{
+					//TODO 进入正常流程
+					return 0;
+				}else
+				{
+					$params_data['error'] = _get_errror_message('database_fail_code');
+					$params_data['error_description'] = _get_errror_message('database_fail_desc');;
+				}
 			}			
 		}	
 		if (isset($params_data['error']))
@@ -64,6 +71,12 @@ class Login extends CI_Controller {
 	{
 		$this->config->load('app_config');
 		return $this->config->item($this->config->item('active_app_config'));
+	}
+	
+	private function _get_errror_message($message_code)
+	{
+		$this->config->load('error_message_config');
+		return $this->config->item($message_code);
 	}
 	
 }
