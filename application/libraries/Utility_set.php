@@ -5,15 +5,14 @@
 | -------------------------------------------------------------------
 */
 
-class UtilitySet{
-	public function redirect_get($url, $params_data)
+class Utility_set{
+	public function url_get($url, $params_data)
 	{
 		$get_url = $url.'?';
 		foreach ($params_data as $key => $value) {
 			$get_url = $get_url.$key.'='.$value.'&';
 		}
-		$get_url = substr($get_url,0,-1);
-		redirect($get_url);
+		return substr($get_url,0,-1);
 	}
 	
 	public function JSON_post($url, $postfields)
@@ -37,5 +36,5 @@ class UtilitySet{
 	}
 }
 
-/* End of file UtilitySet.php */
-/* Location: ./application/libraries/UtilitySet.php */
+/* End of file Utility_set.php */
+/* Location: ./application/libraries/Utility_set.php */

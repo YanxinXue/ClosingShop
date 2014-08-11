@@ -2,23 +2,20 @@
 
 class Login extends CI_Controller {
 
-	//TODO 新增方法判断用户是否已经授权，没有授权跳转到授权页面		
-
 	public function auth()
 	{		
-		$this->load->library('utilitySet');		
-		$this->load->helper('url');
+		$this->load->library('utility_set');		
 		
 		$config_data = $this->_get_app_config();
 		$getfields = array('client_id'=>$config_data['client_id'],
 						'response_type'=>$config_data['response_type'],
 						'redirect_uri'=>$config_data['redirect_uri']);
-		$this->utilityset->redirect_get($config_data['oauth_URL'], $getfields);
+		redirect($this->utility_set->url_get($config_data['oauth_URL'], $getfields));
 	}
 	
 	public function check_auth()
 	{
-		$this->load->library('utilitySet');	
+		$this->load->library('utility_set');	
 		$this->load->helper('date');
 		
 		$params_data = $this->input->get(null, TRUE);
@@ -31,7 +28,7 @@ class Login extends CI_Controller {
 							'client_secret'=>$config_data['client_secret'],
 							'code'=>$params_data['code'],
 							'redirect_uri'=>$config_data['redirect_uri']);
-			$result_JSON = $this->utilityset->JSON_post($config_data['token_URL'], $postfields);
+			$result_JSON = $this->utility_set->JSON_post($config_data['token_URL'], $postfields);
 			$params_data = json_decode($result_JSON, TRUE);			
 			if (isset($params_data['access_token']))
 			{
@@ -51,7 +48,9 @@ class Login extends CI_Controller {
 				}
 				if ($database_result)
 				{
-					//TODO 进入正常流程
+					$this->session->set_userdata($params_data);
+					var_dump($this->session->all_userdata());
+					redirect('main');
 					return 0;
 				}else
 				{
