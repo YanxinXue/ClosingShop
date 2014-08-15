@@ -19,6 +19,7 @@ class Login extends CI_Controller {
 		$this->load->helper('date');
 		
 		$params_data = $this->input->get(null, TRUE);
+		$params_data['error_description'] = _get_errror_message('login_fail');
 		$time_now = now();
 		if (isset($params_data['code']))
 		{
@@ -54,13 +55,10 @@ class Login extends CI_Controller {
 					return 0;
 				}else
 				{
-					$params_data['error'] = _get_errror_message('database_fail_code');
-					$params_data['error_description'] = _get_errror_message('database_fail_desc');;
+					$params_data['error_description'] = _get_errror_message('database_fail');
 				}
 			}			
 		}	
-		if (isset($params_data['error']))
-			$error_message['error'] = $params_data['error'];
 		if (isset($params_data['error_description']))
 			$error_message['error_description'] = $params_data['error_description'];
 		$this->load->view('login\fail', $error_message);

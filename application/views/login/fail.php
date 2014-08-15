@@ -7,7 +7,6 @@
 <body>
 
 授权错误<br/>
-错误码：<?php echo $error ?><br/>
 错误原因：<?php echo $error_description ?><br/>
 
 <button type="button" onClick="location.href='./auth'">重新授权</button>
