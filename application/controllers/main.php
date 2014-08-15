@@ -5,7 +5,7 @@ class Main extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->session->login_check();			
+		$this->session->login_check();
 	}
 
 	public function index()

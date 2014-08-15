@@ -50,7 +50,6 @@ class Login extends CI_Controller {
 				if ($database_result)
 				{
 					$this->session->set_userdata($params_data);
-					var_dump($this->session->all_userdata());
 					redirect('main');
 					return 0;
 				}else
