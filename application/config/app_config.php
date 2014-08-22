@@ -28,7 +28,7 @@ $config['active_app_config'] = 'product';
 */
 $config['test']['oauth_URL'] = 'https://oauth.tbsandbox.com/authorize';
 $config['test']['token_URL'] = 'https://oauth.tbsandbox.com/token';
-$config['test']['api_URL'] = "http://gw.api.tbsandbox.com/router/rest?";
+$config['test']['api_URL'] = "http://gw.api.tbsandbox.com/router/rest";
 $config['test']['client_id'] = '1023002084';				
 $config['test']['client_secret'] = 'sandboxf5d0a83adb6ad160d040c74c2';	
 $config['test']['response_type'] = 'code';
@@ -42,7 +42,7 @@ $config['test']['redirect_uri'] = 'http://localhost/ClosingShop/index.php/login/
 */
 $config['product']['oauth_URL'] = 'https://oauth.taobao.com/authorize';
 $config['product']['token_URL'] = 'https://oauth.taobao.com/token';
-$config['product']['api_URL'] = "http://gw.api.taobao.com/router/rest?";
+$config['product']['api_URL'] = "http://gw.api.taobao.com/router/rest";
 $config['product']['client_id'] = '23002084';                           
 $config['product']['client_secret'] = 'b2970f0f5d0a83adb6ad160d040c74c2'; 
 $config['product']['response_type'] = 'code';
