@@ -10,7 +10,7 @@ class Login extends CI_Controller {
 		$getfields = array('client_id'=>$config_data['client_id'],
 						'response_type'=>$config_data['response_type'],
 						'redirect_uri'=>$config_data['redirect_uri']);
-		redirect($this->utility_set->url_get($config_data['oauth_URL'], $getfields));
+		redirect($this->utility_set->joint_url($config_data['oauth_URL'], $getfields));
 	}
 	
 	public function check_auth()
@@ -29,8 +29,7 @@ class Login extends CI_Controller {
 							'client_secret'=>$config_data['client_secret'],
 							'code'=>$params_data['code'],
 							'redirect_uri'=>$config_data['redirect_uri']);
-			$result_JSON = $this->utility_set->JSON_post($config_data['token_URL'], $postfields);
-			$params_data = json_decode($result_JSON, TRUE);			
+			$params_date = $this->utility_set->get_post_by_json($config_data['token_URL'], $postfields);
 			if (isset($params_data['access_token']))
 			{
 				$params_data['expires_in'] = unix_to_human($time_now + $params_data['expires_in'], TRUE, 'eu');

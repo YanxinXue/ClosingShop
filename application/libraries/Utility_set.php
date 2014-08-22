@@ -6,7 +6,7 @@
 */
 
 class Utility_set{
-	public function url_get($url, $params_data)
+	public function joint_url($url, $params_data)
 	{
 		$get_url = $url.'?';
 		foreach ($params_data as $key => $value) {
@@ -15,7 +15,7 @@ class Utility_set{
 		return substr($get_url,0,-1);
 	}
 	
-	public function JSON_post($url, $postfields)
+	public function get_post_by_json($url, $postfields)
 	{
 		$post_data = '';
 		foreach($postfields as $key => $value){
@@ -32,7 +32,8 @@ class Utility_set{
 		curl_setopt($ch, CURLOPT_POSTFIELDS, substr($post_data,0,-1));
 		$output = curl_exec($ch);
 		curl_close($ch);
-		return $output;
+		$result = json_decode($output, TRUE);
+		return $result;
 	}
 }
 
