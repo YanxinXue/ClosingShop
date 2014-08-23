@@ -47,6 +47,31 @@ class Utility_network{
 		$result = json_decode($output, TRUE);
 		return $result;
 	}
+	
+	/*
+	/ -----------------------------
+	/ 检查API返回结果
+	/ -----------------------------
+	*/
+	public function check_response($data)
+	{
+		if (isset($data['error_response']))
+		{
+			$CI =& get_instance();
+			$error_code = $data['error_response']['code'];
+			$error_message['error_description'] = $data['error_response']['msg'];
+			switch ($error_code)
+			{
+			case 44:
+				$CI->load->view('login\fail', $error_message);
+				break;
+			default:
+				$CI->load->view('login\fail', $error_message);;
+			};
+			return false;
+		}
+		return true;
+	}
 }
 
 /* End of file Utility_network.php */
