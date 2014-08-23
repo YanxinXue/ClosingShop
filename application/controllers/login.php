@@ -4,18 +4,13 @@ class Login extends CI_Controller {
 
 	public function auth()
 	{		
-		$this->load->library('utility_set');		
-		
-		$config_data = $this->_get_app_config();
-		$getfields = array('client_id'=>$config_data['client_id'],
-						'response_type'=>$config_data['response_type'],
-						'redirect_uri'=>$config_data['redirect_uri']);
-		redirect($this->utility_set->joint_url($config_data['oauth_URL'], $getfields));
+		$this->load->library('auth_utility');
+		redirect($this->auth_utility->get_auth_URL());
 	}
 	
 	public function check_auth()
 	{
-		$this->load->library('utility_set');	
+		$this->load->library('auth_utility');
 		$this->load->helper('date');
 		
 		$params_data = $this->input->get(null, TRUE);
@@ -23,13 +18,7 @@ class Login extends CI_Controller {
 		$time_now = now();
 		if (isset($params_data['code']))
 		{
-			$config_data = $this->_get_app_config();
-			$postfields= array('grant_type'=>$config_data['grant_type'],
-							'client_id'=>$config_data['client_id'],
-							'client_secret'=>$config_data['client_secret'],
-							'code'=>$params_data['code'],
-							'redirect_uri'=>$config_data['redirect_uri']);
-			$params_date = $this->utility_set->get_post_by_json($config_data['token_URL'], $postfields);
+			$params_data = $this->auth_utility->get_auth($params_data['code']);
 			if (isset($params_data['access_token']))
 			{
 				$params_data['expires_in'] = unix_to_human($time_now + $params_data['expires_in'], TRUE, 'eu');

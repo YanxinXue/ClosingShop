@@ -1,11 +1,17 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 | -------------------------------------------------------------------
-| Set of Utilities
+| 网络操作工具集合
 | -------------------------------------------------------------------
 */
 
-class Utility_set{
+class Utility_network{
+
+	/*
+	/ -----------------------------
+	/ 传递params来拼接GET请求的URL
+	/ -----------------------------
+	*/
 	public function joint_url($url, $params_data)
 	{
 		$get_url = $url.'?';
@@ -15,6 +21,12 @@ class Utility_set{
 		return substr($get_url,0,-1);
 	}
 	
+	/*
+	/ -----------------------------
+	/ 拼接params来发出POST请求
+	/ 返回POST请求数据
+	/ -----------------------------
+	*/
 	public function get_post_by_json($url, $postfields)
 	{
 		$post_data = '';
@@ -37,5 +49,5 @@ class Utility_set{
 	}
 }
 
-/* End of file Utility_set.php */
-/* Location: ./application/libraries/Utility_set.php */
+/* End of file Utility_network.php */
+/* Location: ./application/libraries/Utility_network.php */
